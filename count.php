@@ -8,7 +8,7 @@ ini_set('display_errors', 1);
 
 header('Content-Type: application/json');
 
-$servername = "sql110.infinityfree.com";
+$servername = " 192.168.1.1";
 $username = "if0_37120445";
 $password = "7ywLPaITwNH3NH";
 $dbname = "if0_37120445_fcos";
