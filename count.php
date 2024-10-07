@@ -8,10 +8,10 @@ ini_set('display_errors', 1);
 
 header('Content-Type: application/json');
 
-$servername = "localhost";
-$username = "id22259730_bvdevelopers";
-$password = "Aeroplane@1";
-$dbname = "id22259730_fcos_recruit";
+$servername = "sql110.infinityfree.com";
+$username = "if0_37120445";
+$password = "7ywLPaITwNH3NH";
+$dbname = "if0_37120445_fcos";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
