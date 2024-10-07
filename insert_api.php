@@ -7,10 +7,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$servername = "localhost";
-$username = "id22259730_bvdevelopers";
-$password = "Aeroplane@1";
-$dbname = "id22259730_fcos_recruit";
+$servername = "165.232.184.202:15644";
+$username = "avnadmin";
+$password = "AVNS_L8JRTMLvztKOKDjzZTT";
+$dbname = "if0_37120445_fcos";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
