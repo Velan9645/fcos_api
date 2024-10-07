@@ -8,9 +8,9 @@ ini_set('display_errors', 1);
 
 header('Content-Type: application/json');
 
-$servername = " 192.168.1.1";
-$username = "if0_37120445";
-$password = "7ywLPaITwNH3NH";
+$servername = "165.232.184.202:15644";
+$username = "avnadmin";
+$password = "AVNS_L8JRTMLvztKOKDjzZTT";
 $dbname = "if0_37120445_fcos";
 
 $ip = gethostbyname($servername);
