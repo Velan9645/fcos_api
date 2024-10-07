@@ -13,6 +13,9 @@ $username = "if0_37120445";
 $password = "7ywLPaITwNH3NH";
 $dbname = "if0_37120445_fcos";
 
+$ip = gethostbyname($servername);
+echo "IP Address of $servername is $ip";
+
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
