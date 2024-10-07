@@ -5,10 +5,10 @@ ini_set('display_errors', 1);
 
 header('Content-Type: application/json');
 
-$servername = "localhost";
-$username = "id22259730_bvdevelopers";
-$password = "Aeroplane@1";
-$dbname = "id22259730_fcos_recruit";
+$servername = "165.232.184.202:15644";
+$username = "avnadmin";
+$password = "AVNS_L8JRTMLvztKOKDjzZTT";
+$dbname = "if0_37120445_fcos";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
