@@ -1,11 +1,12 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+require('fpdf/fpdf.php');
+header('Content-Type: application/json');
 
 $servername = "165.232.184.202:15644";
 $username = "avnadmin";
 $password = "AVNS_L8JRTMLvztKOKDjzZTT";
 $dbname = "if0_37120445_fcos";
+
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -14,87 +15,102 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-?>
-<?php
-$sql = "SELECT id, name, position, department FROM employees";
-$result = $conn->query($sql);
 
-$employeeData = array();
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $employeeData[] = $row;
+$data = json_decode(file_get_contents('php://input'), true);
+
+if (isset($data['ids']) && is_array($data['ids'])) {
+    $ids = implode(",", array_map('intval', $data['ids']));
+
+    $sql = "SELECT * FROM candidates WHERE sNo IN ($ids)";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $candidates = [];
+
+        while($row = $result->fetch_assoc()) {
+            $candidates[] = $row;
+        }
+
+        generatePDF($candidates);
+    } else {
+        echo json_encode(["success" => false, "message" => "No candidates found"]);
     }
 } else {
-    echo "0 results";
+    echo json_encode(["success" => false, "message" => "Invalid input"]);
 }
+
 $conn->close();
-?>
-<?php
-require_once('tcpdf/tcpdf.php');
 
-// create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+function generatePDF($candidates) {
+    $pdf = new FPDF();
+    $pdf->SetAutoPageBreak(true, 10);
+    
+    foreach ($candidates as $candidate) {
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+        $pdf->Cell(0, 10, 'Form Details', 0, 1, 'C');
+        
+        addSection($pdf, 'Personal Information', [
+            'Category' => $candidate['category'],
+            'Candidate Name' => $candidate['candidateName'],
+            'Date of Birth' => $candidate['dob'],
+            'Age' => $candidate['age'],
+            'Gender' => $candidate['gender'],
+            'Aadhar Number' => $candidate['aadharNumber'],
+            'Marital Status' => $candidate['maritalStatus'],
+            'Account Number' => $candidate['accountNumber'],
+            'IFSC Code' => $candidate['ifscCode'],
+            'Branch' => $candidate['branch'],
+            'Shirt Size' => $candidate['shirtSize'],
+            'Pant Size' => $candidate['pantSize'],
+            'Shoe Size' => $candidate['shoeSize']
+        ]);
 
-// set document information
-$pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor('Your Name');
-$pdf->SetTitle('Employee Details');
-$pdf->SetSubject('Employee Details PDF');
-$pdf->SetKeywords('TCPDF, PDF, employee, details');
+        addSection($pdf, 'Communication', [
+            'Phone Number' => $candidate['contactPhoneNo'],
+            'Alternate Phone Number' => $candidate['alternateContactPhoneNo'],
+            'Email' => $candidate['contactEmailId'],
+            'Pin Code' => $candidate['pincode'],
+            'Address' => $candidate['address'],
+            'City' => $candidate['city'],
+            'District' => $candidate['district'],
+            'State' => $candidate['state']
+        ]);
 
-// set default header data
-$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+        addSection($pdf, 'Professional Information', [
+            'Qualification' => $candidate['qualification'],
+            'Current Company Name' => $candidate['currentCompanyName'],
+            'Experience' => $candidate['experience'],
+            'Expecting Job' => $candidate['expectingJob'],
+            'Current Salary' => $candidate['currentSalary'],
+            'Expecting Salary' => $candidate['expectingSalary'],
+            'Accommodation' => $candidate['accommodation'],
+            'Food' => $candidate['food']
+        ]);
 
-// set header and footer fonts
-$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        addSection($pdf, 'Others', [
+            'Biodata Received Date' => $candidate['biodataReceivedDate'],
+            'Status' => $candidate['status'],
+            'Proposed Company Name - Joined/Placed' => $candidate['proposedCompanyNameJoinedOrPlaced'],
+            'Date of Joined' => $candidate['dateOfJoined'],
+            'Last Update Date' => $candidate['lastUpdateDate'],
+            'Remarks' => $candidate['remarks'],
+            'EPF Number' => $candidate['epfNumber'],
+            'ESI Number' => $candidate['esiNumber']
+        ]);
+    }
 
-// set default monospaced font
-$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-// set margins
-$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-// set auto page breaks
-$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-// set image scale factor
-$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-// add a page
-$pdf->AddPage();
-
-// set font
-$pdf->SetFont('helvetica', '', 12);
-
-// create table
-$html = '<h1>Employee Details</h1>
-<table border="1" cellpadding="3">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Department</th>
-        </tr>
-    </thead>
-    <tbody>';
-
-foreach ($employeeData as $employee) {
-    $html .= '<tr>
-                <td>' . $employee['id'] . '</td>
-                <td>' . $employee['name'] . '</td>
-                <td>' . $employee['position'] . '</td>
-                <td>' . $employee['department'] . '</td>
-              </tr>';
+    $pdf->Output('D', 'candidates.pdf');
 }
 
-$html .= '</tbody></table>';
+function addSection($pdf, $sectionTitle, $data) {
+    $pdf->SetFont('Arial', 'B', 14);
+    $pdf->Cell(0, 10, $sectionTitle, 0, 1);
+    $pdf->SetFont('Arial', '', 12);
 
-$pdf->writeHTML($html, true, false, true, false, '');
-
-// output the PDF
-$pdf->Output(.$employee['id'] .''.$employee['name'].'.pdf', 'D');
+    foreach ($data as $label => $value) {
+        $pdf->Cell(0, 10, "$label: " . ($value !== null ? $value : ''), 0, 1);
+    }
+    $pdf->Ln(5); // Add a little space between sections
+}
 ?>
