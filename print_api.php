@@ -1,5 +1,8 @@
 <?php
 require('fpdf186/fpdf.php');
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
 
 $servername = "165.232.184.202:15644";
