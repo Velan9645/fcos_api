@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Prepare the statement
-        $stmt = $conn->prepare("DELETE FROM candidates WHERE sNo IN ($ids_placeholder)");
+        $stmt = $conn->prepare("DELETE FROM Candidates WHERE sNo IN ($ids_placeholder)");
 
         if ($stmt === false) {
             http_response_code(500);

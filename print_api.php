@@ -1,5 +1,5 @@
 <?php
-require('fpdf/fpdf.php');
+require('fpdf186/fpdf.php');
 header('Content-Type: application/json');
 
 $servername = "165.232.184.202:15644";
@@ -21,7 +21,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 if (isset($data['ids']) && is_array($data['ids'])) {
     $ids = implode(",", array_map('intval', $data['ids']));
 
-    $sql = "SELECT * FROM candidates WHERE sNo IN ($ids)";
+    $sql = "SELECT * FROM Candidates WHERE sNo IN ($ids)";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
