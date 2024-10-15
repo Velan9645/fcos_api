@@ -1,6 +1,7 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST,OPTIONS");
+header("Access-Control-Allow-Origin: *"); // Allow requests from all origins
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS"); // Allowed request methods
+header("Access-Control-Allow-Headers: Content-Type, Authorization"); // Allowed headers
 header("Content-Type: application/json; charset=UTF-8");
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200); // Let the browser know the request is valid
@@ -10863,7 +10864,7 @@ $jsonData = '
 
 // Decode JSON data
 $data = json_decode($jsonData, true);
-
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Get the POST body content
 $postData = json_decode(file_get_contents("php://input"), true);
 
@@ -10897,4 +10898,5 @@ if (isset($postData['pincode'])) {
 
 // Return JSON response
 echo json_encode($response);
+}
 ?>
