@@ -1,4 +1,7 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+
 $servername = "165.232.184.202:15644";
 $username = "avnadmin";
 $password = "AVNS_L8JRTMLvztKOKDjzZTT";
