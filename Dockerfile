@@ -1,5 +1,5 @@
 # Use the official PHP 7.4 image with Apache
-FROM php:7.4-apached
+FROM php:7.4-apache
 
 # Copy your application code into the container
 COPY . /var/www/html/
