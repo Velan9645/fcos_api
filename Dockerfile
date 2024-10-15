@@ -5,7 +5,7 @@
 COPY . /var/www/html/
 
 # Install the mysqli extension
-# RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev && \
+RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev && \
 #     docker-php-ext-install mysqli && \
 #     docker-php-ext-enable mysqli
 
