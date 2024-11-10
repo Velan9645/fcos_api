@@ -31,7 +31,7 @@ if ($result) {
     $data = ["message" => "Query error: " . $conn->error];
 }
 
-$data = $total
+$data = $total;
 
 echo json_encode($data);
 
