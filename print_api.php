@@ -47,14 +47,17 @@ function generatePDF($candidates) {
     $pdf = new FPDF();
     $pdf->SetAutoPageBreak(true, 10);
 
+    // Use a font that supports UTF-8 characters
+    $pdf->AddFont('Arial', '', 'Arial.php');  // You may need to download the Arial font in FPDF format
+    $pdf->SetFont('Arial', '', 12);
+
     foreach ($candidates as $candidate) {
         $pdf->AddPage();
         $pdf->SetFont('Arial', 'B', 16);
-        $pdf->SetTextColor(0, 0, 128); // Dark Blue
         $pdf->Cell(0, 10, 'Candidate Fact Sheet', 0, 1, 'C');
         $pdf->Ln(5); // Add space
 
-        $pdf->SetTextColor(0); // Reset to black
+        // Use correct currency symbol for Salary
         addStyledSection($pdf, 'CANDIDATE PERSONAL DETAILS', [
             ['Name', $candidate['candidateName']],
             ['Date of Birth', $candidate['dob']],
@@ -67,8 +70,8 @@ function generatePDF($candidates) {
             ['Current Company', $candidate['currentCompanyName']],
             ['Experience', $candidate['experience']],
             ['Expecting Job', $candidate['expectingJob']],
-            ['Current Salary', '₹' . $candidate['currentSalary']],
-            ['Expecting Salary', '₹' . $candidate['expectingSalary']],
+            ['Current Salary', '₹' . number_format($candidate['currentSalary'], 2)],
+            ['Expecting Salary', '₹' . number_format($candidate['expectingSalary'], 2)],
         ]);
 
         addStyledSection($pdf, 'EDUCATION', [
