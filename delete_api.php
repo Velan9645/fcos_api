@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $ids = $input['ids'];
         $ids_placeholder = implode(',', array_fill(0, count($ids), '?'));
 
-        $servername = "165.232.184.202:15644";
+        $servername = "159.65.146.129:15644";
         $username = "avnadmin";
         $password = "AVNS_L8JRTMLvztKOKDjzZTT";
         $dbname = "if0_37120445_fcos";

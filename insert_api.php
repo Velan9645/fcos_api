@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$servername = "165.232.184.202:15644";
+$servername = "159.65.146.129:15644";
 $username = "avnadmin";
 $password = "AVNS_L8JRTMLvztKOKDjzZTT";
 $dbname = "if0_37120445_fcos";
